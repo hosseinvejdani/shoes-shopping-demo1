@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter_shopping_demo_v00/items/category-menu.dart';
+import 'package:flutter_shopping_demo_v00/items/swiper-item.dart';
 import './drawer_design.dart';
 
 class HomePage extends StatefulWidget {
@@ -143,16 +146,19 @@ class HomePageDesign extends StatefulWidget {
 }
 
 class _HomePageDesignState extends State<HomePageDesign> {
+  //
 
+  //
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
         children: <Widget>[
-          Text('salam salam')
+          CategoryMenu(),
+          SizedBox(height: 7.0,),
+          SwiperItem(),
         ],
       ),
     );
   }
 }
-
