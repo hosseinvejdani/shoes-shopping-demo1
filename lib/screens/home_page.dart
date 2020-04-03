@@ -149,7 +149,7 @@ class _HomePageDesignState extends State<HomePageDesign> {
     return SingleChildScrollView(
       child: Column(
         children: <Widget>[
-          Text('salam')
+          Text('salam salam')
         ],
       ),
     );
