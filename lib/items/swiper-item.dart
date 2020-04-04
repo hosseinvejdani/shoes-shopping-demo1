@@ -22,8 +22,7 @@ class _SwiperItemState extends State<SwiperItem> {
                 topLeft: Radius.circular(radi),
                 bottomLeft: Radius.circular(radi)),
             child: Image.asset(
-              "assets/images/swiper-banners/banner (${index + 1}).jpg",
-              fit: BoxFit.fill,
+              'assets/images/swiper-banners/banner-${index+1}.jpg',
             ),
           );
         },
