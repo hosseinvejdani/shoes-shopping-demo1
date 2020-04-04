@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../services/category_list.dart';
 
 class CategoryMenu extends StatefulWidget {
   @override
@@ -29,45 +30,30 @@ class _CategoryMenuState extends State<CategoryMenu> {
       children: <Widget>[
         Container(
           alignment: Alignment.centerRight,
-          padding: EdgeInsets.only(right: 10.0, top: 15.0,bottom: 3.0),
+          padding: EdgeInsets.only(right: 10.0, top: 15.0, bottom: 5.0),
           child: Text(
             'انتخاب دسته بندی',
-            style: TextStyle(color: Colors.grey[800], fontFamily: "Yekan",fontSize: 16),
+            style: TextStyle(
+                color: Colors.grey[800], fontFamily: "Yekan", fontSize: 16),
           ),
         ),
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              categoryFlatButton('کفش روزمره مردانه'),
-              SizedBox(
-                width: 10.0,
-              ),
-              categoryFlatButton('کفش رسمی مردانه'),
-              SizedBox(
-                width: 10.0,
-              ),
-              categoryFlatButton('کفش روزمره زنانه'),
-              SizedBox(
-                width: 10.0,
-              ),
-              categoryFlatButton('کفش تخت زنانه'),
-              SizedBox(
-                width: 10.0,
-              ),
-              categoryFlatButton('کفش پسرانه'),
-              SizedBox(
-                width: 10.0,
-              ),
-              categoryFlatButton('کفش دخترانه'),
-              SizedBox(
-                width: 10.0,
-              ),
-            ],
+        Container(
+          width: double.infinity,
+          height: 35.0,
+          child: ListView.builder(
+            
+            scrollDirection: Axis.horizontal,
+            itemCount: CategoryList.title.length,
+            itemBuilder: (BuildContext context, int index) {
+              return Padding(
+                padding: const EdgeInsets.only(left: 3.0,right: 3.0,bottom: 5.0),
+                child: categoryFlatButton(CategoryList.title[index]),
+              );
+            },
           ),
         ),
       ],
     );
   }
 }
+
