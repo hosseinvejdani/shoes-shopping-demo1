@@ -10,19 +10,28 @@ class _SwiperItemState extends State<SwiperItem> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.blue,
       width: double.infinity,
-      height: 220,
+      height: 210,
       child: Swiper(
         itemBuilder: (BuildContext context, int index) {
-          return Image.asset(
-            "assets/images/swiper-banners/banner (${index + 1}).jpg",
-            fit: BoxFit.fill,
+          double radi = 10.0;
+          return ClipRRect(
+            borderRadius: BorderRadius.only(
+                bottomRight: Radius.circular(radi),
+                topRight: Radius.circular(radi),
+                topLeft: Radius.circular(radi),
+                bottomLeft: Radius.circular(radi)),
+            child: Image.asset(
+              "assets/images/swiper-banners/banner (${index + 1}).jpg",
+              fit: BoxFit.fill,
+            ),
           );
         },
         itemCount: 5,
         autoplay: true,
         duration: 300,
+        viewportFraction: 0.85,
+        scale: 0.9,
         loop: true,
         pagination: new SwiperPagination(),
         control: new SwiperControl(),
