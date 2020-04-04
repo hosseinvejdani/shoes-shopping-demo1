@@ -36,7 +36,7 @@ class _SelectedProductShowState extends State<SelectedProductShow> {
                   clipBehavior: Clip.antiAlias,
                   child: Column(
                     children: <Widget>[
-                      Image.network(BestSelling.productList[index].imageURL),
+                      Image.asset('assets/images/drSasy.jpg'),
                       Padding(
                         padding: const EdgeInsets.all(10.0),
                         child: Text(
