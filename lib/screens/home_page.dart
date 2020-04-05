@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_shopping_demo_v00/items/latest_products_show.dart';
 import 'package:flutter_shopping_demo_v00/items/most_popular_products_show.dart';
 import '../items/best_selling_products_show.dart';
 import '../items/category-menu.dart';
@@ -134,7 +135,7 @@ class _HomePageState extends State<HomePage> {
         bottomNavigationBar: myBottomBar(),
         drawer: DrawerDesign(),
         body: Container(
-          color: Colors.grey[200],
+          color: Colors.grey[100],
           child: HomePageDesign(),
         ),
       ),
@@ -161,6 +162,7 @@ class _HomePageDesignState extends State<HomePageDesign> {
           SwiperItem(),
           BestSellingProductsShow(),
           MostPopularProductsShow(),
+          LatestProductsShow(),
         ],
       ),
     );
