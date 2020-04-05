@@ -30,44 +30,47 @@ class _SelectedProductShowState extends State<SelectedProductShow> {
             scrollDirection: Axis.horizontal,
             itemCount: 5,
             itemBuilder: (BuildContext context, int index) {
-              return Container(
-                margin: EdgeInsets.only(
-                    top: 8.0, bottom: 8.0, left: 4.0, right: 4.0),
-                width: 190,
-                child: Card(
-                  clipBehavior: Clip.antiAlias,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      Container(
-                        alignment: Alignment.center,
-                        child: Image.network(
-                            BestSelling.productList[index].imageURL),
-                        width: 190,
-                        height: 190,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Text(
-                          BestSelling.productList[index].title,
-                          style: TextStyle(
-                            fontFamily: 'Yekan',
-                            fontSize: 18,
+              return GestureDetector(
+                onTap: (){print('one of best selling products taped');},
+                child: Container(
+                  margin: EdgeInsets.only(
+                      top: 8.0, bottom: 8.0, left: 4.0, right: 4.0),
+                  width: 190,
+                  child: Card(
+                    clipBehavior: Clip.antiAlias,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        Container(
+                          alignment: Alignment.center,
+                          child: Image.network(
+                              BestSelling.productList[index].imageURL),
+                          width: 190,
+                          height: 190,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Text(
+                            BestSelling.productList[index].title,
+                            style: TextStyle(
+                              fontFamily: 'Yekan',
+                              fontSize: 18,
+                            ),
                           ),
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Text(
-                          BestSelling.productList[index].price,
-                          style: TextStyle(
-                            color: Colors.red,
-                            fontFamily: 'Yekan',
-                            fontSize: 20,
+                        Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Text(
+                            BestSelling.productList[index].price,
+                            style: TextStyle(
+                              color: Colors.red,
+                              fontFamily: 'Yekan',
+                              fontSize: 20,
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               );
