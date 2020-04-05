@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_shopping_demo_v00/items/most_popular_products_show.dart';
 import '../items/best_selling_products_show.dart';
 import '../items/category-menu.dart';
 import '../items/swiper-item.dart';
@@ -159,6 +160,7 @@ class _HomePageDesignState extends State<HomePageDesign> {
           SizedBox(height: 7.0,),
           SwiperItem(),
           BestSellingProductsShow(),
+          MostPopularProductsShow(),
         ],
       ),
     );

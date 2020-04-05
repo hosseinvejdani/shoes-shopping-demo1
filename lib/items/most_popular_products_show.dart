@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_shopping_demo_v00/services/best-selling.dart';
+import '../services/most_popular.dart';
 
-class BestSellingProductsShow extends StatefulWidget {
+class MostPopularProductsShow extends StatefulWidget {
   @override
-  _BestSellingProductsShowState createState() => _BestSellingProductsShowState();
+  _MostPopularProductsShowState createState() => _MostPopularProductsShowState();
 }
 
-class _BestSellingProductsShowState extends State<BestSellingProductsShow> {
+class _MostPopularProductsShowState extends State<MostPopularProductsShow> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -18,12 +18,12 @@ class _BestSellingProductsShowState extends State<BestSellingProductsShow> {
           margin: EdgeInsets.all(10.0),
           alignment: Alignment.centerRight,
           child: Text(
-            'پرفروش ترین محصولات',
+            'محبوب ترین محصولات',
             style: TextStyle(fontFamily: 'Yekan', fontSize: 18.0),
           ),
         ),
         Container(
-          color: Colors.red[400],
+          color: Colors.green[700],
           width: double.infinity,
           height: 300,
           child: ListView.builder(
@@ -32,7 +32,7 @@ class _BestSellingProductsShowState extends State<BestSellingProductsShow> {
             itemBuilder: (BuildContext context, int index) {
               return GestureDetector(
                 onTap: () {
-                  print('one of best selling products taped');
+                  print('one of most popular products taped');
                 },
                 child: Container(
                   margin: EdgeInsets.only(
@@ -46,14 +46,14 @@ class _BestSellingProductsShowState extends State<BestSellingProductsShow> {
                         Container(
                           alignment: Alignment.center,
                           child: Image.network(
-                              BestSelling.productList[index].imageURL),
+                              MostPopular.productList[index].imageURL),
                           width: 190,
                           height: 190,
                         ),
                         Padding(
                           padding: const EdgeInsets.all(12.0),
                           child: Text(
-                            BestSelling.productList[index].title,
+                            MostPopular.productList[index].title,
                             style: TextStyle(
                               fontFamily: 'Yekan',
                               fontSize: 18,
@@ -63,7 +63,7 @@ class _BestSellingProductsShowState extends State<BestSellingProductsShow> {
                         Padding(
                           padding: const EdgeInsets.all(12.0),
                           child: Text(
-                            BestSelling.productList[index].price,
+                            MostPopular.productList[index].price,
                             style: TextStyle(
                               color: Colors.red,
                               fontFamily: 'Yekan',
