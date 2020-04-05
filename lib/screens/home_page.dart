@@ -3,6 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_shopping_demo_v00/items/latest_products_show.dart';
 import 'package:flutter_shopping_demo_v00/items/most_popular_products_show.dart';
+import 'package:flutter_shopping_demo_v00/items/selected_products_show.dart';
+import 'package:flutter_shopping_demo_v00/services/best-selling.dart';
+import 'package:flutter_shopping_demo_v00/services/latest_products.dart';
+import 'package:flutter_shopping_demo_v00/services/most_popular.dart';
+import 'package:flutter_shopping_demo_v00/services/special_sale.dart';
 import '../items/best_selling_products_show.dart';
 import '../items/category-menu.dart';
 import '../items/swiper-item.dart';
@@ -158,11 +163,34 @@ class _HomePageDesignState extends State<HomePageDesign> {
       child: Column(
         children: <Widget>[
           CategoryMenu(),
-          SizedBox(height: 7.0,),
+          SizedBox(
+            height: 7.0,
+          ),
           SwiperItem(),
-          BestSellingProductsShow(),
-          MostPopularProductsShow(),
-          LatestProductsShow(),
+          SelectedProductsShow(
+            backgroundColor: Colors.redAccent,
+            title: 'پرفروش ترین محصولات',
+            messege: 'taped on of the best salling products',
+            group: BestSelling.productList,
+          ),
+          SelectedProductsShow(
+            backgroundColor: Colors.greenAccent,
+            title: 'محبوب ترین محصولات',
+            messege: 'taped on of the most popular products',
+            group: MostPopular.productList,
+          ),
+          SelectedProductsShow(
+            backgroundColor: Colors.blueAccent,
+            title: 'جدید ترین محصولات',
+            messege: 'taped on of latest products',
+            group: LatestProducts.productList,
+          ),
+          SelectedProductsShow(
+            backgroundColor: Colors.amberAccent,
+            title: 'فروش ویژه',
+            messege: 'taped on of the specialsales products',
+            group: SpecialSale.productList,
+          ),
         ],
       ),
     );
