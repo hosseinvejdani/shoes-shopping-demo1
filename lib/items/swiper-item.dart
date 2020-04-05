@@ -12,16 +12,19 @@ class _SwiperItemState extends State<SwiperItem> {
     final w = MediaQuery.of(context).size.width;
     return Container(
       width: w,
-      height: 0.5*w,
+      height: 0.5 * w,
       child: Swiper(
         itemBuilder: (BuildContext context, int index) {
           double radi = 10.0;
-          return ClipRRect(
-            clipBehavior: Clip.antiAliasWithSaveLayer,
-            borderRadius: BorderRadius.all(Radius.circular(radi)),
-            child: Image.asset(
-              'assets/images/swiper-banners/banner-${index + 1}.jpg',
-              fit: BoxFit.cover,
+          return GestureDetector(
+            onTap: (){print('taped on banner image');},
+            child: ClipRRect(
+              clipBehavior: Clip.antiAliasWithSaveLayer,
+              borderRadius: BorderRadius.all(Radius.circular(radi)),
+              child: Image.asset(
+                'assets/images/swiper-banners/banner-${index + 1}.jpg',
+                fit: BoxFit.cover,
+              ),
             ),
           );
         },
