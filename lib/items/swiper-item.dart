@@ -9,28 +9,27 @@ class SwiperItem extends StatefulWidget {
 class _SwiperItemState extends State<SwiperItem> {
   @override
   Widget build(BuildContext context) {
+    final w = MediaQuery.of(context).size.width;
     return Container(
-      width: double.infinity,
-      height: 210,
+      width: w,
+      height: 0.5*w,
       child: Swiper(
         itemBuilder: (BuildContext context, int index) {
           double radi = 10.0;
           return ClipRRect(
-            borderRadius: BorderRadius.only(
-                bottomRight: Radius.circular(radi),
-                topRight: Radius.circular(radi),
-                topLeft: Radius.circular(radi),
-                bottomLeft: Radius.circular(radi)),
+            clipBehavior: Clip.antiAliasWithSaveLayer,
+            borderRadius: BorderRadius.all(Radius.circular(radi)),
             child: Image.asset(
-              'assets/images/swiper-banners/banner-${index+1}.jpg',
+              'assets/images/swiper-banners/banner-${index + 1}.jpg',
+              fit: BoxFit.cover,
             ),
           );
         },
         itemCount: 5,
         autoplay: true,
         duration: 300,
-        viewportFraction: 0.85,
-        scale: 0.9,
+        //viewportFraction: 1,
+        //scale: 0.9,
         loop: true,
         pagination: new SwiperPagination(),
         control: new SwiperControl(),

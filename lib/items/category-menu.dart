@@ -14,7 +14,7 @@ class _CategoryMenuState extends State<CategoryMenu> {
       padding: EdgeInsets.only(left: 8.0, right: 8.0),
       child: Text(
         title,
-        style: TextStyle(color: Colors.white, fontFamily: "Yekan"),
+        style: TextStyle(color: Colors.white, fontFamily: "Yekan",fontSize: 16.0),
       ),
       color: Color(0xff7d3cff),
       shape: RoundedRectangleBorder(
@@ -34,7 +34,7 @@ class _CategoryMenuState extends State<CategoryMenu> {
           child: Text(
             'انتخاب دسته بندی',
             style: TextStyle(
-                color: Colors.grey[800], fontFamily: "Yekan", fontSize: 16),
+                color: Colors.grey[800], fontFamily: "Yekan", fontSize: 18),
           ),
         ),
         Container(
