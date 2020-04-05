@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_shopping_demo_v00/services/best-selling.dart';
 
-class SelectedProductShow extends StatefulWidget {
+class BestSellingProductsShow extends StatefulWidget {
   @override
-  _SelectedProductShowState createState() => _SelectedProductShowState();
+  _BestSellingProductsShowState createState() => _BestSellingProductsShowState();
 }
 
-class _SelectedProductShowState extends State<SelectedProductShow> {
+class _BestSellingProductsShowState extends State<BestSellingProductsShow> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -31,7 +31,9 @@ class _SelectedProductShowState extends State<SelectedProductShow> {
             itemCount: 5,
             itemBuilder: (BuildContext context, int index) {
               return GestureDetector(
-                onTap: (){print('one of best selling products taped');},
+                onTap: () {
+                  print('one of best selling products taped');
+                },
                 child: Container(
                   margin: EdgeInsets.only(
                       top: 8.0, bottom: 8.0, left: 4.0, right: 4.0),

@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_shopping_demo_v00/items/category-menu.dart';
-import 'package:flutter_shopping_demo_v00/items/selected_product_show.dart';
-import 'package:flutter_shopping_demo_v00/items/swiper-item.dart';
+import '../items/best_selling_products_show.dart';
+import '../items/category-menu.dart';
+import '../items/swiper-item.dart';
 import './drawer_design.dart';
 
 class HomePage extends StatefulWidget {
@@ -158,7 +158,7 @@ class _HomePageDesignState extends State<HomePageDesign> {
           CategoryMenu(),
           SizedBox(height: 7.0,),
           SwiperItem(),
-          SelectedProductShow(),
+          BestSellingProductsShow(),
         ],
       ),
     );
