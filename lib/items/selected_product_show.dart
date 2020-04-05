@@ -11,13 +11,15 @@ class _SelectedProductShowState extends State<SelectedProductShow> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        SizedBox(height: 8.0,),
+        SizedBox(
+          height: 8.0,
+        ),
         Container(
           margin: EdgeInsets.all(10.0),
           alignment: Alignment.centerRight,
           child: Text(
             'پرفروش ترین محصولات',
-            style: TextStyle(fontFamily: 'Yekan',fontSize: 20.0),
+            style: TextStyle(fontFamily: 'Yekan', fontSize: 18.0),
           ),
         ),
         Container(
@@ -35,10 +37,17 @@ class _SelectedProductShowState extends State<SelectedProductShow> {
                 child: Card(
                   clipBehavior: Clip.antiAlias,
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
-                      Image.asset('assets/images/drSasy.jpg'),
+                      Container(
+                        alignment: Alignment.center,
+                        child: Image.network(
+                            BestSelling.productList[index].imageURL),
+                        width: 190,
+                        height: 190,
+                      ),
                       Padding(
-                        padding: const EdgeInsets.all(10.0),
+                        padding: const EdgeInsets.all(12.0),
                         child: Text(
                           BestSelling.productList[index].title,
                           style: TextStyle(
@@ -47,9 +56,8 @@ class _SelectedProductShowState extends State<SelectedProductShow> {
                           ),
                         ),
                       ),
-                      Spacer(),
                       Padding(
-                        padding: const EdgeInsets.all(10.0),
+                        padding: const EdgeInsets.all(12.0),
                         child: Text(
                           BestSelling.productList[index].price,
                           style: TextStyle(
