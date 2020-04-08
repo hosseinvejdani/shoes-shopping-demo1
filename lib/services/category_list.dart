@@ -1,10 +1,11 @@
+import 'package:csv/csv.dart';
+import 'package:flutter/services.dart';
+
 class CategoryList {
-  static List<String> title = [
-    'کفش روزمره مردانه',
-    'کفش رسمی مردانه',
-    'کفش روزمره زنانه',
-    'کفش تخت زنانه',
-    'کفش پسرانه',
-    'کفش دخترانه',
-  ];
+  //
+  static loadData() async {
+    final myData = await rootBundle.loadString("assets/data/category.csv");
+    List<List<dynamic>> csvTable = CsvToListConverter().convert(myData);
+    return csvTable[0];
+  }
 }

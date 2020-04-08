@@ -1,5 +1,6 @@
+import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
-import '../services/category_list.dart';
+import 'package:flutter/services.dart';
 
 class CategoryMenu extends StatefulWidget {
   @override
@@ -9,12 +10,14 @@ class CategoryMenu extends StatefulWidget {
 class _CategoryMenuState extends State<CategoryMenu> {
   //
   Widget categoryFlatButton(String title) {
+
     return FlatButton(
       onPressed: () {},
       padding: EdgeInsets.only(left: 8.0, right: 8.0),
       child: Text(
         title,
-        style: TextStyle(color: Colors.white, fontFamily: "Yekan",fontSize: 16.0),
+        style:
+            TextStyle(color: Colors.white, fontFamily: "Yekan", fontSize: 16.0),
       ),
       color: Color(0xff7d3cff),
       shape: RoundedRectangleBorder(
@@ -22,7 +25,23 @@ class _CategoryMenuState extends State<CategoryMenu> {
       ),
     );
   }
+
   //
+
+  List<List<dynamic>> data = [];
+  loadAsset() async {
+    final myData = await rootBundle.loadString("assets/data/category.csv");
+    List<List<dynamic>> csvTable = CsvToListConverter().convert(myData);
+    setState(() {
+      data = csvTable;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    loadAsset();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,13 +60,13 @@ class _CategoryMenuState extends State<CategoryMenu> {
           width: double.infinity,
           height: 35.0,
           child: ListView.builder(
-            
             scrollDirection: Axis.horizontal,
-            itemCount: CategoryList.title.length,
+            itemCount: 7,
             itemBuilder: (BuildContext context, int index) {
               return Padding(
-                padding: const EdgeInsets.only(left: 3.0,right: 3.0,bottom: 5.0),
-                child: categoryFlatButton(CategoryList.title[index]),
+                padding:
+                    const EdgeInsets.only(left: 3.0, right: 3.0, bottom: 5.0),
+                child: categoryFlatButton(data[0][index]),
               );
             },
           ),
@@ -56,4 +75,3 @@ class _CategoryMenuState extends State<CategoryMenu> {
     );
   }
 }
-
