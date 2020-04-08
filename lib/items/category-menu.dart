@@ -28,7 +28,7 @@ class _CategoryMenuState extends State<CategoryMenu> {
 
   //
 
-  List<List<dynamic>> data = [];
+  List<List<dynamic>> data;
   loadAsset() async {
     final myData = await rootBundle.loadString("assets/data/category.csv");
     List<List<dynamic>> csvTable = CsvToListConverter().convert(myData);
@@ -61,7 +61,7 @@ class _CategoryMenuState extends State<CategoryMenu> {
           height: 35.0,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            itemCount: 7,
+            itemCount: (data == null ? 0 : data[0].length),
             itemBuilder: (BuildContext context, int index) {
               return Padding(
                 padding:
