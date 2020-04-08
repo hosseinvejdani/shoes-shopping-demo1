@@ -1,6 +1,7 @@
 import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import '../screens/filtered_category_products.dart';
 
 class CategoryMenu extends StatefulWidget {
   @override
@@ -10,9 +11,13 @@ class CategoryMenu extends StatefulWidget {
 class _CategoryMenuState extends State<CategoryMenu> {
   //
   Widget categoryFlatButton(String title) {
-
     return FlatButton(
-      onPressed: () {},
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => FilteredCategoryProducts()),
+        );
+      },
       padding: EdgeInsets.only(left: 8.0, right: 8.0),
       child: Text(
         title,

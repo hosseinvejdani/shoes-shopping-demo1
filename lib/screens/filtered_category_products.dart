@@ -1,21 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import '../items/selected_products_show.dart';
-import '../services/best-selling.dart';
-import '../services/latest_products.dart';
-import '../services/most_popular.dart';
-import '../services/special_sale.dart';
-import '../items/category-menu.dart';
-import '../items/swiper-item.dart';
+import 'package:flutter_shopping_demo_v00/screens/grid_view_design.dart';
+import 'package:flutter_shopping_demo_v00/screens/list_view_design.dart';
 import './drawer_design.dart';
 
-class HomePage extends StatefulWidget {
+class FilteredCategoryProducts extends StatefulWidget {
   @override
-  _HomePageState createState() => _HomePageState();
+  _FilteredCategoryProductsState createState() => _FilteredCategoryProductsState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _FilteredCategoryProductsState extends State<FilteredCategoryProducts> {
   bool isSearching = false;
   bool isListViewItems = true;
 
@@ -132,63 +127,14 @@ class _HomePageState extends State<HomePage> {
       textDirection: TextDirection.rtl,
       child: Scaffold(
         appBar: PreferredSize(
-            child: isSearching ? searchAppBar() : mainAppBar('خانه'),
+            child: isSearching ? searchAppBar() : mainAppBar('دسته '),
             preferredSize: Size.fromHeight(kToolbarHeight)),
         bottomNavigationBar: myBottomBar(),
         drawer: DrawerDesign(),
         body: Container(
           color: Colors.grey[100],
-          child: HomePageDesign(),
+          child: isListViewItems ? ListViewDesign() : GridViewDesign(),
         ),
-      ),
-    );
-  }
-}
-
-class HomePageDesign extends StatefulWidget {
-  @override
-  _HomePageDesignState createState() => _HomePageDesignState();
-}
-
-class _HomePageDesignState extends State<HomePageDesign> {
-  //
-
-  //
-  @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: <Widget>[
-          CategoryMenu(),
-          SizedBox(
-            height: 7.0,
-          ),
-          SwiperItem(),
-          SelectedProductsShow(
-            backgroundColor: Colors.redAccent,
-            title: 'پرفروش ترین محصولات',
-            messege: 'taped on of the best salling products',
-            group: BestSelling.productList,
-          ),
-          SelectedProductsShow(
-            backgroundColor: Colors.greenAccent,
-            title: 'محبوب ترین محصولات',
-            messege: 'taped on of the most popular products',
-            group: MostPopular.productList,
-          ),
-          SelectedProductsShow(
-            backgroundColor: Colors.blueAccent,
-            title: 'جدید ترین محصولات',
-            messege: 'taped on of latest products',
-            group: LatestProducts.productList,
-          ),
-          SelectedProductsShow(
-            backgroundColor: Colors.amberAccent,
-            title: 'فروش ویژه',
-            messege: 'taped on of the specialsales products',
-            group: SpecialSale.productList,
-          ),
-        ],
       ),
     );
   }

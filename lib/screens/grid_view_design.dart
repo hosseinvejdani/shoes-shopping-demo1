@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 
-class GridViewDesign extends StatelessWidget {
+class GridViewDesign extends StatefulWidget {
+  @override
+  _GridViewDesignState createState() => _GridViewDesignState();
+}
+
+class _GridViewDesignState extends State<GridViewDesign> {
   @override
   Widget build(BuildContext context) {
     final w = MediaQuery.of(context).size.width;

@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 
-class ListViewDesign extends StatelessWidget {
+class ListViewDesign extends StatefulWidget {
+  @override
+  _ListViewDesignState createState() => _ListViewDesignState();
+}
+
+class _ListViewDesignState extends State<ListViewDesign> {
   @override
   Widget build(BuildContext context) {
     final w = MediaQuery.of(context).size.width;
