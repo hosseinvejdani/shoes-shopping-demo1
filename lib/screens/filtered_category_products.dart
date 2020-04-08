@@ -17,6 +17,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   bool isSearching = false;
+  bool isListViewItems = true;
 
   Widget mainAppBar(String title) {
     return AppBar(
@@ -41,6 +42,22 @@ class _HomePageState extends State<HomePage> {
               size: 26,
             ),
             onPressed: () {}),
+        IconButton(
+          onPressed: () {
+            setState(() {
+              isListViewItems = !isListViewItems;
+            });
+          },
+          icon: isListViewItems
+              ? Icon(
+                  Icons.apps,
+                  size: 26,
+                )
+              : Icon(
+                  Icons.list,
+                  size: 26,
+                ),
+        ),
       ],
     );
   }
