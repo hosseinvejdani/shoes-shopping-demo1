@@ -1,13 +1,20 @@
+import 'package:csv/csv.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_shopping_demo_v00/screens/grid_view_design.dart';
 import 'package:flutter_shopping_demo_v00/screens/list_view_design.dart';
 import './drawer_design.dart';
 
 class FilteredCategoryProducts extends StatefulWidget {
+  final String categoryTitle;
+
+  FilteredCategoryProducts({@required this.categoryTitle});
+
   @override
-  _FilteredCategoryProductsState createState() => _FilteredCategoryProductsState();
+  _FilteredCategoryProductsState createState() =>
+      _FilteredCategoryProductsState();
 }
 
 class _FilteredCategoryProductsState extends State<FilteredCategoryProducts> {
@@ -121,6 +128,28 @@ class _FilteredCategoryProductsState extends State<FilteredCategoryProducts> {
     );
   }
 
+  List<String> productsImageURL = new List<String>();
+  //
+  loadProductsData() async {
+    final myData = await rootBundle.loadString("assets/data/products.csv");
+    List<List<dynamic>> csvTable = CsvToListConverter().convert(myData);
+    List<String> urlList = new List<String>();
+    //
+    csvTable.forEach((item) {
+      if (item[0] == widget.categoryTitle) urlList.add(item[1]);
+    });
+    //
+    setState(() {
+      productsImageURL = urlList;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    loadProductsData();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Directionality(
@@ -133,7 +162,15 @@ class _FilteredCategoryProductsState extends State<FilteredCategoryProducts> {
         drawer: DrawerDesign(),
         body: Container(
           color: Colors.grey[100],
-          child: isListViewItems ? ListViewDesign() : GridViewDesign(),
+          child: isListViewItems
+              ? ListViewDesign(
+                  urlList: productsImageURL,
+                  categoryTitle: widget.categoryTitle,
+                )
+              : GridViewDesign(
+                  urlList: productsImageURL,
+                  categoryTitle: widget.categoryTitle,
+                ),
         ),
       ),
     );

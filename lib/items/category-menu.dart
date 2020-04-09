@@ -15,7 +15,7 @@ class _CategoryMenuState extends State<CategoryMenu> {
       onPressed: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => FilteredCategoryProducts()),
+          MaterialPageRoute(builder: (context) => FilteredCategoryProducts(categoryTitle: title,)),
         );
       },
       padding: EdgeInsets.only(left: 8.0, right: 8.0),
