@@ -128,20 +128,16 @@ class _FilteredCategoryProductsState extends State<FilteredCategoryProducts> {
     );
   }
 
-  List<String> productsImageURL = new List<String>();
-  //
-  loadProductsData() async {
+  Future<List<String>> loadProductsData() async {
     final myData = await rootBundle.loadString("assets/data/products.csv");
     List<List<dynamic>> csvTable = CsvToListConverter().convert(myData);
-    List<String> urlList = new List<String>();
+    List<String> productsImageURL = [];
     //
     csvTable.forEach((item) {
-      if (item[0] == widget.categoryTitle) urlList.add(item[1]);
+      if (item[0] == widget.categoryTitle) productsImageURL.add(item[1]);
     });
     //
-    setState(() {
-      productsImageURL = urlList;
-    });
+    return productsImageURL;
   }
 
   @override
@@ -162,15 +158,23 @@ class _FilteredCategoryProductsState extends State<FilteredCategoryProducts> {
         drawer: DrawerDesign(),
         body: Container(
           color: Colors.grey[100],
-          child: isListViewItems
-              ? ListViewDesign(
-                  urlList: productsImageURL,
-                  categoryTitle: widget.categoryTitle,
-                )
-              : GridViewDesign(
-                  urlList: productsImageURL,
-                  categoryTitle: widget.categoryTitle,
-                ),
+          child: FutureBuilder(
+              future: loadProductsData(),
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                if (snapshot.data == null) {
+                  return Center(child: CircularProgressIndicator());
+                } else {
+                  return isListViewItems
+                      ? ListViewDesign(
+                          urlList: snapshot.data,
+                          categoryTitle: widget.categoryTitle,
+                        )
+                      : GridViewDesign(
+                          urlList: snapshot.data,
+                          categoryTitle: widget.categoryTitle,
+                        );
+                }
+              }),
         ),
       ),
     );

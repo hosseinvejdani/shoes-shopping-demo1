@@ -1,9 +1,12 @@
-import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import '../screens/filtered_category_products.dart';
 
 class CategoryMenu extends StatefulWidget {
+
+  final List<String> categoryList;
+
+  const CategoryMenu({Key key, this.categoryList}) : super(key: key);
+
   @override
   _CategoryMenuState createState() => _CategoryMenuState();
 }
@@ -33,20 +36,7 @@ class _CategoryMenuState extends State<CategoryMenu> {
 
   //
 
-  List<List<dynamic>> data;
-  loadAsset() async {
-    final myData = await rootBundle.loadString("assets/data/category.csv");
-    List<List<dynamic>> csvTable = CsvToListConverter().convert(myData);
-    setState(() {
-      data = csvTable;
-    });
-  }
 
-  @override
-  void initState() {
-    super.initState();
-    loadAsset();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,12 +56,12 @@ class _CategoryMenuState extends State<CategoryMenu> {
           height: 35.0,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            itemCount: (data == null ? 0 : data[0].length),
+            itemCount: widget.categoryList.length,
             itemBuilder: (BuildContext context, int index) {
               return Padding(
                 padding:
                     const EdgeInsets.only(left: 3.0, right: 3.0, bottom: 5.0),
-                child: categoryFlatButton(data[0][index]),
+                child: categoryFlatButton(widget.categoryList[index]),
               );
             },
           ),

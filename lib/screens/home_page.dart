@@ -1,6 +1,8 @@
+import 'package:csv/csv.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import '../items/selected_products_show.dart';
 import '../services/best-selling.dart';
 import '../services/latest_products.dart';
@@ -38,7 +40,7 @@ class _HomePageState extends State<HomePage> {
         IconButton(
             icon: Icon(
               Icons.category,
-              size: 26,
+              size: 28,
             ),
             onPressed: () {}),
       ],
@@ -109,6 +111,18 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  Future<List<String>> loadAsset() async {
+    final myData = await rootBundle.loadString("assets/data/category.csv");
+    List<List<dynamic>> csvTable = CsvToListConverter().convert(myData);
+
+    List<String> categoryData = [];
+    csvTable[0].forEach((value) {
+      categoryData.add(value.toString());
+    });
+
+    return categoryData;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Directionality(
@@ -121,7 +135,18 @@ class _HomePageState extends State<HomePage> {
         drawer: DrawerDesign(),
         body: Container(
           color: Colors.grey[100],
-          child: HomePageDesign(),
+          child: FutureBuilder(
+              future: loadAsset(),
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                if (snapshot.data == null) {
+                  return CircularProgressIndicator();
+                } else {
+                  return HomePageDesign(
+                    //List<String>
+                    categoryData: snapshot.data,
+                  );
+                }
+              }),
         ),
       ),
     );
@@ -129,6 +154,10 @@ class _HomePageState extends State<HomePage> {
 }
 
 class HomePageDesign extends StatefulWidget {
+  final List<String> categoryData;
+
+  const HomePageDesign({Key key, this.categoryData}) : super(key: key);
+
   @override
   _HomePageDesignState createState() => _HomePageDesignState();
 }
@@ -142,7 +171,7 @@ class _HomePageDesignState extends State<HomePageDesign> {
     return SingleChildScrollView(
       child: Column(
         children: <Widget>[
-          CategoryMenu(),
+          CategoryMenu(categoryList: widget.categoryData),
           SizedBox(
             height: 7.0,
           ),
