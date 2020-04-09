@@ -30,7 +30,7 @@ class _ListViewDesignState extends State<ListViewDesign> {
                         topRight: Radius.circular(4.0),
                         topLeft: Radius.circular(4.0),
                         bottomLeft: Radius.circular(4.0)),
-                    child: Image.network(widget.urlList[index]),
+                    child: Image.network(widget.urlList[index],),
                   ),
                 ),
                 Expanded(

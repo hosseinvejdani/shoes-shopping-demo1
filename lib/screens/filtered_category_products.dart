@@ -140,11 +140,6 @@ class _FilteredCategoryProductsState extends State<FilteredCategoryProducts> {
     return productsImageURL;
   }
 
-  @override
-  void initState() {
-    super.initState();
-    loadProductsData();
-  }
 
   @override
   Widget build(BuildContext context) {

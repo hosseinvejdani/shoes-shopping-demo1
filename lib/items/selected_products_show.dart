@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 
 class SelectedProductsShow extends StatefulWidget {
-  @required  final String title;
-  @required final String messege;
-  @required final Color backgroundColor;
-  @required final dynamic group;
+  @required
+  final String title;
+  @required
+  final String messege;
+  @required
+  final Color backgroundColor;
+  @required
+  final dynamic group;
 
-  SelectedProductsShow({this.title,this.messege,this.backgroundColor,this.group});
+  SelectedProductsShow(
+      {this.title, this.messege, this.backgroundColor, this.group});
 
   @override
   _SelectedProductsShowState createState() => _SelectedProductsShowState();
@@ -52,7 +57,8 @@ class _SelectedProductsShowState extends State<SelectedProductsShow> {
                         Container(
                           alignment: Alignment.center,
                           child: Image.network(
-                              widget.group[index].imageURL),
+                            widget.group[index].imageURL,
+                          ),
                           width: 190,
                           height: 190,
                         ),
