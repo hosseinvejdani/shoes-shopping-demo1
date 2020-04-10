@@ -13,6 +13,8 @@ import '../items/swiper-item.dart';
 import './drawer_design.dart';
 
 class HomePage extends StatefulWidget {
+  static bool showCategoryMenu = true;
+
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -42,7 +44,11 @@ class _HomePageState extends State<HomePage> {
               Icons.category,
               size: 28,
             ),
-            onPressed: () {}),
+            onPressed: () {
+              setState(() {
+                HomePage.showCategoryMenu = !HomePage.showCategoryMenu;
+              });
+            }),
       ],
     );
   }
@@ -115,12 +121,12 @@ class _HomePageState extends State<HomePage> {
     final myData = await rootBundle.loadString("assets/data/category.csv");
     List<List<dynamic>> csvTable = CsvToListConverter().convert(myData);
 
-    List<String> categoryData = [];
+    List<String> categoryList = [];
     csvTable[0].forEach((value) {
-      categoryData.add(value.toString());
+      categoryList.add(value.toString());
     });
 
-    return categoryData;
+    return categoryList;
   }
 
   @override
@@ -143,7 +149,7 @@ class _HomePageState extends State<HomePage> {
                 } else {
                   return HomePageDesign(
                     //List<String>
-                    categoryData: snapshot.data,
+                    categoryList: snapshot.data,
                   );
                 }
               }),
@@ -154,9 +160,9 @@ class _HomePageState extends State<HomePage> {
 }
 
 class HomePageDesign extends StatefulWidget {
-  final List<String> categoryData;
+  final List<String> categoryList;
 
-  const HomePageDesign({Key key, this.categoryData}) : super(key: key);
+  const HomePageDesign({Key key, this.categoryList}) : super(key: key);
 
   @override
   _HomePageDesignState createState() => _HomePageDesignState();
@@ -171,7 +177,7 @@ class _HomePageDesignState extends State<HomePageDesign> {
     return SingleChildScrollView(
       child: Column(
         children: <Widget>[
-          CategoryMenu(categoryList: widget.categoryData),
+          CategoryMenu(categoryList: widget.categoryList,showCategoryMenu: HomePage.showCategoryMenu,),
           SizedBox(
             height: 7.0,
           ),

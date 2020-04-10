@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
 class SelectedProductsShow extends StatefulWidget {
+
+  static bool showCategoryMenu = true;
+
   @required
   final String title;
   @required

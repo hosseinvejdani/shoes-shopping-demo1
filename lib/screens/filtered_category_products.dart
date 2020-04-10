@@ -19,7 +19,10 @@ class FilteredCategoryProducts extends StatefulWidget {
 
 class _FilteredCategoryProductsState extends State<FilteredCategoryProducts> {
   bool isSearching = false;
-  bool isListViewItems = true;
+  bool showCategoryMenu = false;
+  bool isListViewItems;
+  
+
 
   Widget mainAppBar(String title) {
     return AppBar(
@@ -43,7 +46,11 @@ class _FilteredCategoryProductsState extends State<FilteredCategoryProducts> {
               Icons.category,
               size: 26,
             ),
-            onPressed: () {}),
+            onPressed: () {
+              setState(() {
+                showCategoryMenu = !showCategoryMenu;
+              });
+            }),
         IconButton(
           onPressed: () {
             setState(() {
@@ -142,6 +149,12 @@ class _FilteredCategoryProductsState extends State<FilteredCategoryProducts> {
 
 
   @override
+  void initState() {
+    super.initState();
+    isListViewItems = true;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Directionality(
       textDirection: TextDirection.rtl,
@@ -154,22 +167,25 @@ class _FilteredCategoryProductsState extends State<FilteredCategoryProducts> {
         body: Container(
           color: Colors.grey[100],
           child: FutureBuilder(
-              future: loadProductsData(),
-              builder: (BuildContext context, AsyncSnapshot snapshot) {
-                if (snapshot.data == null) {
-                  return Center(child: CircularProgressIndicator());
-                } else {
-                  return isListViewItems
-                      ? ListViewDesign(
-                          urlList: snapshot.data,
-                          categoryTitle: widget.categoryTitle,
-                        )
-                      : GridViewDesign(
-                          urlList: snapshot.data,
-                          categoryTitle: widget.categoryTitle,
-                        );
-                }
-              }),
+            future: loadProductsData(),
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              if (snapshot.data == null) {
+                return Center(child: CircularProgressIndicator());
+              } else {
+                return isListViewItems
+                    ? ListViewDesign(
+                        urlList: snapshot.data,
+                        categoryTitle: widget.categoryTitle,
+                        showCategoryMenu: showCategoryMenu,
+                      )
+                    : GridViewDesign(
+                        urlList: snapshot.data,
+                        categoryTitle: widget.categoryTitle,
+                        showCategoryMenu: showCategoryMenu,
+                      );
+              }
+            },
+          ),
         ),
       ),
     );
