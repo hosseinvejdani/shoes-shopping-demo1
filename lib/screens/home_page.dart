@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_shopping_demo_v00/screens/searchScreen.dart';
 import '../items/selected_products_show.dart';
 import '../services/best-selling.dart';
 import '../services/latest_products.dart';
@@ -20,6 +21,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  String searchedTitle = '';
   bool isSearching = false;
 
   Widget mainAppBar(String title) {
@@ -56,11 +58,20 @@ class _HomePageState extends State<HomePage> {
   Widget searchAppBar() {
     return AppBar(
       title: TextField(
+        style: TextStyle(color:Colors.white,fontFamily: 'Yekan',fontSize: 18.0 ),
         maxLines: 1,
         decoration: InputDecoration(
-            alignLabelWithHint: false,
-            hintText: 'جستجو',
-            hintStyle: TextStyle(color: Colors.white54, fontFamily: 'Yekan')),
+          alignLabelWithHint: false,
+          hintText: 'جستجو',
+          hintStyle: TextStyle(color: Colors.white54, fontFamily: 'Yekan'),
+        ),
+        onChanged: (value) {
+          setState(
+            () {
+              searchedTitle = value;
+            },
+          );
+        },
       ),
       actions: <Widget>[
         IconButton(
@@ -81,6 +92,7 @@ class _HomePageState extends State<HomePage> {
             onPressed: () {
               setState(() {
                 isSearching = !isSearching;
+                searchedTitle = '';
               });
             }),
       ],
@@ -117,16 +129,28 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Future<List<String>> loadAsset() async {
-    final myData = await rootBundle.loadString("assets/data/category.csv");
-    List<List<dynamic>> csvTable = CsvToListConverter().convert(myData);
-
+  Future<List<List<String>>> loadData(String searchedTitle) async {
+    final myProductsData =
+        await rootBundle.loadString("assets/data/products.csv");
+    List<List<dynamic>> csvProductsTable =
+        CsvToListConverter().convert(myProductsData);
+    List<String> searchResultList = [];
+    csvProductsTable.forEach((item) {
+      if (searchedTitle != '' && item[0].toString().contains(searchedTitle)) {
+        searchResultList.add(item[0]);
+      }
+    });
+    //
+    final myCategoryData =
+        await rootBundle.loadString("assets/data/category.csv");
+    List<List<dynamic>> csvCategoryTable =
+        CsvToListConverter().convert(myCategoryData);
     List<String> categoryList = [];
-    csvTable[0].forEach((value) {
+    csvCategoryTable[0].forEach((value) {
       categoryList.add(value.toString());
     });
-
-    return categoryList;
+    List<List<String>> data = [searchResultList, categoryList];
+    return data;
   }
 
   @override
@@ -142,17 +166,23 @@ class _HomePageState extends State<HomePage> {
         body: Container(
           color: Colors.grey[100],
           child: FutureBuilder(
-              future: loadAsset(),
-              builder: (BuildContext context, AsyncSnapshot snapshot) {
-                if (snapshot.data == null) {
-                  return CircularProgressIndicator();
-                } else {
-                  return HomePageDesign(
-                    //List<String>
-                    categoryList: snapshot.data,
-                  );
-                }
-              }),
+            future: loadData(searchedTitle),
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              if (snapshot.data == null) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else {
+                return isSearching
+                    ? SearchScreen(
+                        searchResultList: snapshot.data[0],
+                      )
+                    : HomePageDesign(
+                        categoryList: snapshot.data[1], //List<String>
+                      );
+              }
+            },
+          ),
         ),
       ),
     );
@@ -177,7 +207,10 @@ class _HomePageDesignState extends State<HomePageDesign> {
     return SingleChildScrollView(
       child: Column(
         children: <Widget>[
-          CategoryMenu(categoryList: widget.categoryList,showCategoryMenu: HomePage.showCategoryMenu,),
+          CategoryMenu(
+            categoryList: widget.categoryList,
+            showCategoryMenu: HomePage.showCategoryMenu,
+          ),
           SizedBox(
             height: 7.0,
           ),
