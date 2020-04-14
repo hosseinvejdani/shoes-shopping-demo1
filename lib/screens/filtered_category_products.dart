@@ -1,16 +1,16 @@
-import 'package:csv/csv.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_shopping_demo_v00/screens/grid_view_design.dart';
 import 'package:flutter_shopping_demo_v00/screens/list_view_design.dart';
+import 'package:flutter_shopping_demo_v00/screens/searchScreen.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 import './drawer_design.dart';
 
 class FilteredCategoryProducts extends StatefulWidget {
-  final String categoryTitle;
+  final String categoryID;
 
-  FilteredCategoryProducts({@required this.categoryTitle});
+  FilteredCategoryProducts({@required this.categoryID});
 
   @override
   _FilteredCategoryProductsState createState() =>
@@ -18,11 +18,21 @@ class FilteredCategoryProducts extends StatefulWidget {
 }
 
 class _FilteredCategoryProductsState extends State<FilteredCategoryProducts> {
+  String searchedWord = '';
   bool isSearching = false;
   bool showCategoryMenu = false;
   bool isListViewItems;
-  
-
+  String query = '''
+  query Products(\$categoryId: ID!) {
+    products(categoryId: \$categoryId) {
+      id
+      name
+      price
+      descreption
+      imageURL
+    }
+  }
+  ''';
 
   Widget mainAppBar(String title) {
     return AppBar(
@@ -74,11 +84,21 @@ class _FilteredCategoryProductsState extends State<FilteredCategoryProducts> {
   Widget searchAppBar() {
     return AppBar(
       title: TextField(
+        style:
+            TextStyle(color: Colors.white, fontFamily: 'Yekan', fontSize: 18.0),
         maxLines: 1,
         decoration: InputDecoration(
-            alignLabelWithHint: false,
-            hintText: 'جستجو',
-            hintStyle: TextStyle(color: Colors.white54, fontFamily: 'Yekan')),
+          alignLabelWithHint: false,
+          hintText: 'جستجو',
+          hintStyle: TextStyle(color: Colors.white54, fontFamily: 'Yekan'),
+        ),
+        onChanged: (value) {
+          setState(
+            () {
+              searchedWord = value;
+            },
+          );
+        },
       ),
       actions: <Widget>[
         IconButton(
@@ -99,6 +119,7 @@ class _FilteredCategoryProductsState extends State<FilteredCategoryProducts> {
             onPressed: () {
               setState(() {
                 isSearching = !isSearching;
+                searchedWord = '';
               });
             }),
       ],
@@ -135,19 +156,6 @@ class _FilteredCategoryProductsState extends State<FilteredCategoryProducts> {
     );
   }
 
-  Future<List<String>> loadProductsData() async {
-    final myData = await rootBundle.loadString("assets/data/products.csv");
-    List<List<dynamic>> csvTable = CsvToListConverter().convert(myData);
-    List<String> productsImageURL = [];
-    //
-    csvTable.forEach((item) {
-      if (item[0] == widget.categoryTitle) productsImageURL.add(item[1]);
-    });
-    //
-    return productsImageURL;
-  }
-
-
   @override
   void initState() {
     super.initState();
@@ -166,24 +174,33 @@ class _FilteredCategoryProductsState extends State<FilteredCategoryProducts> {
         drawer: DrawerDesign(),
         body: Container(
           color: Colors.grey[100],
-          child: FutureBuilder(
-            future: loadProductsData(),
-            builder: (BuildContext context, AsyncSnapshot snapshot) {
-              if (snapshot.data == null) {
-                return Center(child: CircularProgressIndicator());
-              } else {
-                return isListViewItems
-                    ? ListViewDesign(
-                        urlList: snapshot.data,
-                        categoryTitle: widget.categoryTitle,
-                        showCategoryMenu: showCategoryMenu,
-                      )
-                    : GridViewDesign(
-                        urlList: snapshot.data,
-                        categoryTitle: widget.categoryTitle,
-                        showCategoryMenu: showCategoryMenu,
-                      );
+          child: Query(
+            options: QueryOptions(
+                // this is the query string you just created
+                documentNode: gql(query),
+                variables: {"categoryId": int.parse(widget.categoryID)}),
+            builder: (QueryResult result,
+                {VoidCallback refetch, FetchMore fetchMore}) {
+              if (result.hasException) {
+                return Text(result.exception.toString());
               }
+
+              if (result.loading) {
+                return Center(child: CircularProgressIndicator());
+              }
+              return isSearching
+                  ? SearchScreen(
+                      searchedWord: searchedWord,
+                    )
+                  : (isListViewItems
+                      ? ListViewDesign(
+                          productList: result.data["products"],
+                          showCategoryMenu: showCategoryMenu,
+                        )
+                      : GridViewDesign(
+                          productList: result.data["products"],
+                          showCategoryMenu: showCategoryMenu,
+                        ));
             },
           ),
         ),

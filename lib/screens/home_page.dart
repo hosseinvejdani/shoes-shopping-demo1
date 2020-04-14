@@ -1,14 +1,10 @@
-import 'package:csv/csv.dart';
+import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/services.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:flutter_shopping_demo_v00/screens/searchScreen.dart';
 import '../items/selected_products_show.dart';
-import '../services/best-selling.dart';
-import '../services/latest_products.dart';
-import '../services/most_popular.dart';
-import '../services/special_sale.dart';
 import '../items/category-menu.dart';
 import '../items/swiper-item.dart';
 import './drawer_design.dart';
@@ -21,7 +17,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  String searchedTitle = '';
+  String searchedWord = '';
   bool isSearching = false;
 
   Widget mainAppBar(String title) {
@@ -58,7 +54,8 @@ class _HomePageState extends State<HomePage> {
   Widget searchAppBar() {
     return AppBar(
       title: TextField(
-        style: TextStyle(color:Colors.white,fontFamily: 'Yekan',fontSize: 18.0 ),
+        style:
+            TextStyle(color: Colors.white, fontFamily: 'Yekan', fontSize: 18.0),
         maxLines: 1,
         decoration: InputDecoration(
           alignLabelWithHint: false,
@@ -68,7 +65,7 @@ class _HomePageState extends State<HomePage> {
         onChanged: (value) {
           setState(
             () {
-              searchedTitle = value;
+              searchedWord = value;
             },
           );
         },
@@ -92,7 +89,7 @@ class _HomePageState extends State<HomePage> {
             onPressed: () {
               setState(() {
                 isSearching = !isSearching;
-                searchedTitle = '';
+                searchedWord = '';
               });
             }),
       ],
@@ -129,30 +126,6 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Future<List<List<String>>> loadData(String searchedTitle) async {
-    final myProductsData =
-        await rootBundle.loadString("assets/data/products.csv");
-    List<List<dynamic>> csvProductsTable =
-        CsvToListConverter().convert(myProductsData);
-    List<String> searchResultList = [];
-    csvProductsTable.forEach((item) {
-      if (searchedTitle != '' && item[0].toString().contains(searchedTitle)) {
-        searchResultList.add(item[0]);
-      }
-    });
-    //
-    final myCategoryData =
-        await rootBundle.loadString("assets/data/category.csv");
-    List<List<dynamic>> csvCategoryTable =
-        CsvToListConverter().convert(myCategoryData);
-    List<String> categoryList = [];
-    csvCategoryTable[0].forEach((value) {
-      categoryList.add(value.toString());
-    });
-    List<List<String>> data = [searchResultList, categoryList];
-    return data;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Directionality(
@@ -165,24 +138,11 @@ class _HomePageState extends State<HomePage> {
         drawer: DrawerDesign(),
         body: Container(
           color: Colors.grey[100],
-          child: FutureBuilder(
-            future: loadData(searchedTitle),
-            builder: (BuildContext context, AsyncSnapshot snapshot) {
-              if (snapshot.data == null) {
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              } else {
-                return isSearching
-                    ? SearchScreen(
-                        searchResultList: snapshot.data[0],
-                      )
-                    : HomePageDesign(
-                        categoryList: snapshot.data[1], //List<String>
-                      );
-              }
-            },
-          ),
+          child: isSearching
+              ? SearchScreen(
+                  searchedWord: searchedWord,
+                )
+              : HomePageDesign(),
         ),
       ),
     );
@@ -190,57 +150,91 @@ class _HomePageState extends State<HomePage> {
 }
 
 class HomePageDesign extends StatefulWidget {
-  final List<String> categoryList;
+  final Map<String, dynamic> queryResult;
 
-  const HomePageDesign({Key key, this.categoryList}) : super(key: key);
+  const HomePageDesign({Key key, this.queryResult}) : super(key: key);
 
   @override
   _HomePageDesignState createState() => _HomePageDesignState();
 }
 
 class _HomePageDesignState extends State<HomePageDesign> {
+  String query = '''
+  {
+    products {
+      id
+      name
+      price
+      imageURL
+    }
+  }
+  ''';
   //
+  List<dynamic> makeRandomLits(List<dynamic> products) {
+    List<dynamic> randomList = [];
+    var num = new Random();
+    for (int i = 0; i < 7; i++) {
+      var randomIndex = num.nextInt(products.length);
+      randomList.add(products[randomIndex]);
+    }
+    return randomList;
+  }
 
   //
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: <Widget>[
-          CategoryMenu(
-            categoryList: widget.categoryList,
-            showCategoryMenu: HomePage.showCategoryMenu,
-          ),
-          SizedBox(
-            height: 7.0,
-          ),
-          SwiperItem(),
-          SelectedProductsShow(
-            backgroundColor: Colors.redAccent,
-            title: 'پرفروش ترین محصولات',
-            messege: 'taped on of the best salling products',
-            group: BestSelling.productList,
-          ),
-          SelectedProductsShow(
-            backgroundColor: Colors.greenAccent,
-            title: 'محبوب ترین محصولات',
-            messege: 'taped on of the most popular products',
-            group: MostPopular.productList,
-          ),
-          SelectedProductsShow(
-            backgroundColor: Colors.blueAccent,
-            title: 'جدید ترین محصولات',
-            messege: 'taped on of latest products',
-            group: LatestProducts.productList,
-          ),
-          SelectedProductsShow(
-            backgroundColor: Colors.amberAccent,
-            title: 'فروش ویژه',
-            messege: 'taped on of the specialsales products',
-            group: SpecialSale.productList,
-          ),
-        ],
+    return Query(
+      options: QueryOptions(
+        // this is the query string you just created
+        documentNode: gql(query),
       ),
+      builder: (QueryResult result,
+          {VoidCallback refetch, FetchMore fetchMore}) {
+        if (result.hasException) {
+          return Text(result.exception.toString());
+        }
+
+        if (result.loading) {
+          return Center(child: CircularProgressIndicator());
+        }
+        return SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              CategoryMenu(
+                showCategoryMenu: HomePage.showCategoryMenu,
+              ),
+              SizedBox(
+                height: 7.0,
+              ),
+              SwiperItem(),
+              SelectedProductsShow(
+                backgroundColor: Colors.redAccent,
+                title: 'پرفروش ترین محصولات',
+                messege: 'taped on of the best salling products',
+                selectedProductsList: makeRandomLits(result.data["products"]),
+              ),
+              SelectedProductsShow(
+                backgroundColor: Colors.greenAccent,
+                title: 'محبوب ترین محصولات',
+                messege: 'taped on of the most popular products',
+                selectedProductsList: makeRandomLits(result.data["products"]),
+              ),
+              SelectedProductsShow(
+                backgroundColor: Colors.blueAccent,
+                title: 'جدید ترین محصولات',
+                messege: 'taped on of latest products',
+                selectedProductsList: makeRandomLits(result.data["products"]),
+              ),
+              SelectedProductsShow(
+                backgroundColor: Colors.amberAccent,
+                title: 'فروش ویژه',
+                messege: 'taped on of the specialsales products',
+                selectedProductsList: makeRandomLits(result.data["products"]),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

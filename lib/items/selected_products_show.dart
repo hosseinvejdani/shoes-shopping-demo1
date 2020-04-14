@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class SelectedProductsShow extends StatefulWidget {
-
   static bool showCategoryMenu = true;
 
   @required
@@ -11,16 +10,18 @@ class SelectedProductsShow extends StatefulWidget {
   @required
   final Color backgroundColor;
   @required
-  final dynamic group;
+  final List<dynamic> selectedProductsList;
 
   SelectedProductsShow(
-      {this.title, this.messege, this.backgroundColor, this.group});
+      {this.title, this.messege, this.backgroundColor, this.selectedProductsList});
 
   @override
   _SelectedProductsShowState createState() => _SelectedProductsShowState();
 }
 
 class _SelectedProductsShowState extends State<SelectedProductsShow> {
+
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -42,55 +43,55 @@ class _SelectedProductsShowState extends State<SelectedProductsShow> {
           height: 300,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            itemCount: 6,
+            itemCount: widget.selectedProductsList.length,
             itemBuilder: (BuildContext context, int index) {
               return GestureDetector(
-                onTap: () {
-                  print(widget.messege);
-                },
-                child: Container(
-                  margin: EdgeInsets.only(
-                      top: 8.0, bottom: 8.0, left: 4.0, right: 4.0),
-                  width: 190,
-                  child: Card(
-                    clipBehavior: Clip.antiAlias,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: <Widget>[
-                        Container(
-                          alignment: Alignment.center,
-                          child: Image.network(
-                            widget.group[index].imageURL,
-                          ),
-                          width: 190,
-                          height: 190,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: Text(
-                            widget.group[index].title,
-                            style: TextStyle(
-                              fontFamily: 'Yekan',
-                              fontSize: 18,
+                    onTap: () {
+                      print(widget.messege);
+                    },
+                    child: Container(
+                      margin: EdgeInsets.only(
+                          top: 8.0, bottom: 8.0, left: 4.0, right: 4.0),
+                      width: 190,
+                      child: Card(
+                        clipBehavior: Clip.antiAlias,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: <Widget>[
+                            Container(
+                              alignment: Alignment.center,
+                              child: Image.network(
+                                widget.selectedProductsList[index]["imageURL"],
+                              ),
+                              width: 190,
+                              height: 190,
                             ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: Text(
-                            widget.group[index].price,
-                            style: TextStyle(
-                              color: Colors.red,
-                              fontFamily: 'Yekan',
-                              fontSize: 20,
+                            Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Text(
+                                widget.selectedProductsList[index]["name"],
+                                style: TextStyle(
+                                  fontFamily: 'Yekan',
+                                  fontSize: 18,
+                                ),
+                              ),
                             ),
-                          ),
+                            Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Text(
+                                widget.selectedProductsList[index]["price"],
+                                style: TextStyle(
+                                  color: Colors.red,
+                                  fontFamily: 'Yekan',
+                                  fontSize: 20,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
-                  ),
-                ),
-              );
+                  );
             },
           ),
         ),
