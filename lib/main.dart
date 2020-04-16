@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_shopping_demo_v00/screens/home_page.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import './screens/home_page.dart';
 import 'config/client.dart';
 
 void main() => runApp(MyApp());
@@ -13,15 +13,12 @@ class MyApp extends StatelessWidget {
     return GraphQLProvider(
       client: Config.initailizeClient(),
       child: MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        appBarTheme: AppBarTheme(
-          color: Colors.grey[700]
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          appBarTheme: AppBarTheme(color: Colors.grey[700]),
         ),
+        home: HomePage(),
       ),
-      home: HomePage(),
-    ),
     );
   }
 }
-

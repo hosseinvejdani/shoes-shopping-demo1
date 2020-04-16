@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
+import 'product_details.dart';
+
 class SearchScreen extends StatefulWidget {
   final String searchedWord;
   // call query based on searched title if (searchTitle != '')
@@ -28,12 +30,11 @@ class _SearchScreenState extends State<SearchScreen> {
       textDirection: TextDirection.rtl,
       child: Query(
         options: QueryOptions(
-          // this is the query string you just created
-          documentNode: gql(query),
-          variables: {
-            "name":widget.searchedWord,
-          }
-        ),
+            // this is the query string you just created
+            documentNode: gql(query),
+            variables: {
+              "name": widget.searchedWord,
+            }),
         builder: (QueryResult result,
             {VoidCallback refetch, FetchMore fetchMore}) {
           if (result.hasException) {
@@ -49,6 +50,16 @@ class _SearchScreenState extends State<SearchScreen> {
               itemCount: result.data["products"].length,
               itemBuilder: (BuildContext context, int index) {
                 return ListTile(
+                  onTap: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ProductDetails(
+                          productID: result.data["products"][index]["id"],
+                        ),
+                      ),
+                    );
+                  },
                   title: Container(
                     padding: EdgeInsets.all(5.0),
                     height: 35.0,

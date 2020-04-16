@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_shopping_demo_v00/items/category-menu.dart';
+import '../items/category-menu.dart';
+import '../screens/product_details.dart';
 
 class ListViewDesign extends StatefulWidget {
   final List<dynamic> productList;
@@ -72,9 +73,19 @@ class _ListViewDesignState extends State<ListViewDesign> {
                                 textDirection: TextDirection.rtl,
                               ),
                             ),
+                            
                             Center(
                               child: RaisedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ProductDetails(
+                                        productID: widget.productList[index]["id"],
+                                      ),
+                                    ),
+                                  );
+                                },
                                 child: Text('مشاهده جزئیات'),
                                 color: Colors.amber,
                               ),

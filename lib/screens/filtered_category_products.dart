@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_shopping_demo_v00/screens/grid_view_design.dart';
 import 'package:flutter_shopping_demo_v00/screens/list_view_design.dart';
 import 'package:flutter_shopping_demo_v00/screens/searchScreen.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
@@ -21,7 +20,6 @@ class _FilteredCategoryProductsState extends State<FilteredCategoryProducts> {
   String searchedWord = '';
   bool isSearching = false;
   bool showCategoryMenu = false;
-  bool isListViewItems;
   String query = '''
   query Products(\$categoryId: ID!) {
     products(categoryId: \$categoryId) {
@@ -61,22 +59,6 @@ class _FilteredCategoryProductsState extends State<FilteredCategoryProducts> {
                 showCategoryMenu = !showCategoryMenu;
               });
             }),
-        IconButton(
-          onPressed: () {
-            setState(() {
-              isListViewItems = !isListViewItems;
-            });
-          },
-          icon: isListViewItems
-              ? Icon(
-                  Icons.apps,
-                  size: 26,
-                )
-              : Icon(
-                  Icons.list,
-                  size: 26,
-                ),
-        ),
       ],
     );
   }
@@ -156,11 +138,7 @@ class _FilteredCategoryProductsState extends State<FilteredCategoryProducts> {
     );
   }
 
-  @override
-  void initState() {
-    super.initState();
-    isListViewItems = true;
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -168,7 +146,7 @@ class _FilteredCategoryProductsState extends State<FilteredCategoryProducts> {
       textDirection: TextDirection.rtl,
       child: Scaffold(
         appBar: PreferredSize(
-            child: isSearching ? searchAppBar() : mainAppBar('دسته '),
+            child: isSearching ? searchAppBar() : mainAppBar(''),
             preferredSize: Size.fromHeight(kToolbarHeight)),
         bottomNavigationBar: myBottomBar(),
         drawer: DrawerDesign(),
@@ -192,15 +170,10 @@ class _FilteredCategoryProductsState extends State<FilteredCategoryProducts> {
                   ? SearchScreen(
                       searchedWord: searchedWord,
                     )
-                  : (isListViewItems
-                      ? ListViewDesign(
-                          productList: result.data["products"],
-                          showCategoryMenu: showCategoryMenu,
-                        )
-                      : GridViewDesign(
-                          productList: result.data["products"],
-                          showCategoryMenu: showCategoryMenu,
-                        ));
+                  : ListViewDesign(
+                      productList: result.data["products"],
+                      showCategoryMenu: showCategoryMenu,
+                    );
             },
           ),
         ),
