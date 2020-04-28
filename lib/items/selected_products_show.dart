@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_shopping_demo_v00/env.dart';
 import '../screens/product_details.dart';
 
 class SelectedProductsShow extends StatefulWidget {
@@ -71,7 +72,7 @@ class _SelectedProductsShowState extends State<SelectedProductsShow> {
                         Container(
                           alignment: Alignment.center,
                           child: Image.network(
-                            widget.selectedProductsList[index]["imageURL"],
+                            Env.mediaURL+widget.selectedProductsList[index]["imageURL"],
                           ),
                           width: 190,
                           height: 190,

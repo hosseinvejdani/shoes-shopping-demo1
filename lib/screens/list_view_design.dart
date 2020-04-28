@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../env.dart';
 import '../items/category-menu.dart';
 import '../screens/product_details.dart';
 
@@ -39,7 +40,7 @@ class _ListViewDesignState extends State<ListViewDesign> {
                               topLeft: Radius.circular(4.0),
                               bottomLeft: Radius.circular(4.0)),
                           child: Image.network(
-                            widget.productList[index]["imageURL"],
+                            Env.mediaURL+widget.productList[index]["imageURL"],
                           ),
                         ),
                       ),

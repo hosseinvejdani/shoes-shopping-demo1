@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_shopping_demo_v00/screens/home_page.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'config/client.dart';
+import 'screens/login_page.dart';
+//import 'screens/product_details.dart';
+//import 'screens/home_page.dart';
 
 void main() => runApp(MyApp());
 
@@ -17,7 +19,9 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           appBarTheme: AppBarTheme(color: Colors.grey[700]),
         ),
-        home: HomePage(),
+        //home: HomePage(),
+        //home: ProductDetails(productID: 302),
+        home: LoginPage(),
       ),
     );
   }

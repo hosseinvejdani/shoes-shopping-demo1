@@ -1,10 +1,9 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_shopping_demo_v00/items/selected_products_show.dart';
 import 'package:flutter_shopping_demo_v00/screens/searchScreen.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-
+import '../env.dart';
 import 'drawer_design.dart';
 
 class ProductDetails extends StatefulWidget {
@@ -178,10 +177,9 @@ class _ProductDetailsPageDesignState extends State<ProductDetailsPageDesign> {
         name
       }
     }
+    
   }
   ''';
-
-  bool isFavor = false;
 
   List<dynamic> makeRandomLits(List<dynamic> products) {
     List<dynamic> randomList = [];
@@ -195,6 +193,8 @@ class _ProductDetailsPageDesignState extends State<ProductDetailsPageDesign> {
 
   @override
   Widget build(BuildContext context) {
+    print('<<< Product Id >>>');
+    print(int.parse(widget.productID));
     //final h = MediaQuery.of(context).size.height;
     final w = MediaQuery.of(context).size.width;
     return Query(
@@ -236,7 +236,7 @@ class _ProductDetailsPageDesignState extends State<ProductDetailsPageDesign> {
                           child: Container(
                             alignment: Alignment.center,
                             padding: EdgeInsets.all(10),
-                            width: 0.9*w,
+                            width: 0.9 * w,
                             color: Color(0xFF0F4C81),
                             child: Text(
                               result.data["product"]["name"],
@@ -244,13 +244,12 @@ class _ProductDetailsPageDesignState extends State<ProductDetailsPageDesign> {
                                   fontFamily: 'Yekan',
                                   fontSize: 18.0,
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.white
-                                  ),
+                                  color: Colors.white),
                             ),
                           ),
                         ),
                       ),
-                      Image.network(result.data["product"]["imageURL"]),
+                      Image.network(Env.mediaURL+result.data["product"]["imageURL"]),
                       Padding(
                         padding: const EdgeInsets.only(
                             bottom: 8.0, right: 8.0, left: 8.0),
@@ -281,18 +280,7 @@ class _ProductDetailsPageDesignState extends State<ProductDetailsPageDesign> {
                                   fontSize: 25.0,
                                   color: Color(0xFF0F4C81)),
                             ),
-                            IconButton(
-                              icon: Icon(
-                                isFavor ? Icons.favorite : Icons.favorite_border,
-                                size: 32,
-                                color: Colors.redAccent,
-                              ),
-                              onPressed: () {
-                                setState(() {
-                                  isFavor = !isFavor;
-                                });
-                              },
-                            )
+                            FavorietIconButton(),
                           ],
                         ),
                       ),
@@ -310,6 +298,31 @@ class _ProductDetailsPageDesignState extends State<ProductDetailsPageDesign> {
             ),
           ),
         );
+      },
+    );
+  }
+}
+
+class FavorietIconButton extends StatefulWidget {
+  @override
+  _FavorietIconButtonState createState() => _FavorietIconButtonState();
+}
+
+class _FavorietIconButtonState extends State<FavorietIconButton> {
+  bool isFavor = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      icon: Icon(
+        isFavor ? Icons.favorite : Icons.favorite_border,
+        size: 32,
+        color: Colors.redAccent,
+      ),
+      onPressed: () {
+        setState(() {
+          isFavor = !isFavor;
+        });
       },
     );
   }

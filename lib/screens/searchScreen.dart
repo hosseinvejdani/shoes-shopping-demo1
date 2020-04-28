@@ -51,7 +51,7 @@ class _SearchScreenState extends State<SearchScreen> {
               itemBuilder: (BuildContext context, int index) {
                 return ListTile(
                   onTap: () {
-                    Navigator.pushReplacement(
+                    Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => ProductDetails(
