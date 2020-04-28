@@ -27,7 +27,6 @@ class _LoginPageState extends State<LoginPage> {
 
   void errMessage() {
     var snackbar;
-    loginErrCounter++;
     if (loginErrCounter < 4) {
       snackbar =
           SnackBar(content: new Text("نام کاربری یا رمز عبور اشتباه است"));
