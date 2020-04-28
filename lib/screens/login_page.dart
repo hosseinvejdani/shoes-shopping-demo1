@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:string_validator/string_validator.dart';
 import '../env.dart';
 import './registration_page.dart';
 import 'home_page.dart';
@@ -105,7 +106,7 @@ class _LoginPageState extends State<LoginPage> {
                             return null;
                           },
                           onSaved: (value) {
-                            username = value;
+                            username = trim(value);
                           },
                         ),
                         SizedBox(
@@ -127,7 +128,7 @@ class _LoginPageState extends State<LoginPage> {
                             return null;
                           },
                           onSaved: (value) {
-                            password = value;
+                            password = trim(value);
                           },
                         ),
                         SizedBox(
